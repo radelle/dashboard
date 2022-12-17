@@ -531,10 +531,7 @@
                                     </div>
                                   </div>
                                   <div class="table-responsive mt-1">
-                                    <table
-                                      class="table select-table"
-                                      id="myTable"
-                                    >
+                                    <table id="myTable" class="table select-table">
                                       <thead>
                                         <tr>
                                           <th></th>
@@ -544,13 +541,18 @@
                                           <th>Status</th>
                                         </tr>
                                       </thead>
-                                      <tbody>
+                                      <!-- <tbody>
                                         <tr>
                                           <td>
                                           </td>
                                           <td>
-                                            <div class="d-flex">
-                                              <div>
+                                            <div class="d-flex" id="myTable" onLoad= "playerAdd()">
+                                              <p id = "displayRow"></p>
+                                            </div>
+                                          </td>
+                                        
+                                          
+                                               <div>
                                                 <h6 id="displayName"></h6>
                                                 <p id="displayEmail"></p>
                                               </div>
@@ -568,7 +570,32 @@
                                             </div>
                                           </td>
                                         </tr>
-                                      </tbody>
+                                        <tr>
+                                          <td>
+                                          </td>
+                                          <td>
+                                            <div class="d-flex" id = "myTable" onLoad= "playerAdd">
+                                              <p id = "displayRow"></p>
+                                              <div>
+                                                
+                                                <h6 id="displayName"></h6>
+                                                <p id="displayEmail"></p>
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td>
+                                            <h6 id="displayCreatedOn"></h6>
+                                          </td>
+                                          <td>
+                                            <h6 id="displayLoggedIn"></h6>
+                                          </td>
+                                          <td>
+                                            <div>
+                                              <p id="displayStatus"></p>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody> -->
                                     </table>
                                   </div>
                                 </div>

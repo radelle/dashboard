@@ -36,10 +36,15 @@ function getPlayerData() {
         try {
           //let's do something about it
           var playerStats = document.getElementById("player-stats");
-          var stats = "";
           snapshot.forEach((childSnapshot) => {
             //looping through each snapshot
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+            
+            var table = document.getElementById("myTable");
+            var row = table.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+          
             console.log("User key: " + childSnapshot.key);
             console.log("Username: " + childSnapshot.child("userName").val());
             console.log("GetPlayerData: childkey " + childSnapshot.key);
@@ -62,18 +67,27 @@ function getPlayerData() {
               document.getElementById("displayStatus").innerHTML = "Offline";
             };
 
+            const playerRow = [document.getElementById("displayName").innerHTML + document.getElementById("displayEmail").innerHTML +
+            document.getElementById("displayCreatedOn").innerHTML + document.getElementById("displayLoggedIn").innerHTML +
+            document.getElementById("displayStatus").innerHTML];
+
+            console.log("Each table row: " + playerRow);
+
+            document.getElementById("displayRow").innerHTML = playerRow;
+
+            //console.log("Player Stats: " + playerStats)
           });
           //update our table content
-          playerStats.innerHTML = stats;
+          //playerStats.innerHTML = stats;
         } catch (error) {
           console.log("Error getPlayerData" + error);
         }
       }
       else {
         console.log("No data available");
-      }
+      };
     });
-}//end getPlayerData
+};//end getPlayerData
 
 function writePlayerData(userId, username, email, createdOn, loggedOn, active){
   const db = getDatabase
@@ -83,8 +97,16 @@ function writePlayerData(userId, username, email, createdOn, loggedOn, active){
     createdOn: createdOn,
     loggedOn: loggedOn,
     active: active
-  })
-}
+  });
+};
+
+function playerAdd()
+{
+  childSnapshot.child("userName").val() = username;
+  const stats = [username];
+  console.log(username);
+};
+
 
 
 

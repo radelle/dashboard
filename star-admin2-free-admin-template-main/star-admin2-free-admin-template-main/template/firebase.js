@@ -36,14 +36,23 @@ function getPlayerData() {
         try {
           //let's do something about it
           var playerStats = document.getElementById("player-stats");
+          let data = [];
           snapshot.forEach((childSnapshot) => {
             //looping through each snapshot
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
             
-            var table = document.getElementById("myTable");
-            var row = table.insertRow(0);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
+            // var table = document.getElementById("myTable");
+            // var row = table.insertRow(0);
+            // var cell1 = row.insertCell(0);
+            // var cell2 = row.insertCell(1);
+            var playerData = new Object();
+            playerData.userNametemp = childSnapshot.child("userName").val() + ": " + childSnapshot.child("email").val();
+            // childSnapshot.emailtemp = childSnapshot.child("email").val();
+            playerData.createdOntemp = childSnapshot.child("createdOn").val();
+            playerData.lastLoggedIntemp = childSnapshot.child("lastLoggedIn").val();
+            playerData.active = childSnapshot.child("active").val();
+            data.push(playerData);
+            console.log(childSnapshot);
           
             console.log("User key: " + childSnapshot.key);
             console.log("Username: " + childSnapshot.child("userName").val());
@@ -51,32 +60,67 @@ function getPlayerData() {
             console.log("Email: " + childSnapshot.child("email").val());
             console.log("Created On: " + childSnapshot.child("createdOn").val());
             console.log("Last Logged In: " + childSnapshot.child("lastLoggedIn").val());
-            document.getElementById("displayName").innerHTML = childSnapshot.child("userName").val();
-            document.getElementById("displayEmail").innerHTML = childSnapshot.child("email").val();
-            document.getElementById("displayCreatedOn").innerHTML = childSnapshot.child("createdOn").val();
-            document.getElementById("displayLoggedIn").innerHTML = childSnapshot.child("lastLoggedIn").val();
-            document.getElementById("displayStatus").innerHTML = childSnapshot.child("active").val();
-            if (document.getElementById("displayStatus").innerHTML == "true")
-            {
-              console.log("User is active");
-              document.getElementById("displayStatus").innerHTML = "Active";
-            }
-            else
-            {
-              console.log("User is inactive");
-              document.getElementById("displayStatus").innerHTML = "Offline";
-            };
+            // document.getElementById("displayName").innerHTML = childSnapshot.child("userName").val();
+            // document.getElementById("displayEmail").innerHTML = childSnapshot.child("email").val();
+            // document.getElementById("displayCreatedOn").innerHTML = childSnapshot.child("createdOn").val();
+            // document.getElementById("displayLoggedIn").innerHTML = childSnapshot.child("lastLoggedIn").val();
+            // document.getElementById("displayStatus").innerHTML = childSnapshot.child("active").val();
+            // if (document.getElementById("displayStatus").innerHTML == "true")
+            // {
+            //   console.log("User is active");
+            //   document.getElementById("displayStatus").innerHTML = "Active";
+            // }
+            // else
+            // {
+            //   console.log("User is inactive");
+            //   document.getElementById("displayStatus").innerHTML = "Offline";
+            // };
 
-            const playerRow = [document.getElementById("displayName").innerHTML + document.getElementById("displayEmail").innerHTML +
-            document.getElementById("displayCreatedOn").innerHTML + document.getElementById("displayLoggedIn").innerHTML +
-            document.getElementById("displayStatus").innerHTML];
+            // const playerRow = [document.getElementById("displayName").innerHTML + document.getElementById("displayEmail").innerHTML +
+            // document.getElementById("displayCreatedOn").innerHTML + document.getElementById("displayLoggedIn").innerHTML +
+            // document.getElementById("displayStatus").innerHTML];
 
-            console.log("Each table row: " + playerRow);
+            let tableBody = document.querySelector('#tbody');
 
-            document.getElementById("displayRow").innerHTML = playerRow;
+
+
+            //console.log("Each table row: " + playerRow);
+
+            // document.getElementById("displayRow").innerHTML = playerRow;
 
             //console.log("Player Stats: " + playerStats)
           });
+          console.log(data);
+          
+          let myTable = document.querySelector('#table');
+          let headers = ['Player', 'Created On', 'Last Logged In', 'Status'];
+
+          let table = document.createElement('table');
+          let headerRow = document.createElement('tr');
+
+          headers.forEach(headerText => {
+            let header = document.createElement('th');
+            let textNode = document.createTextNode(headerText);
+            header.appendChild(textNode);
+            headerRow.appendChild(header);
+          });
+
+          table.appendChild(headerRow);
+
+          data.forEach(datael => {
+            let row = document.createElement('tr');
+            Object.values(datael).forEach(text =>{
+              let cell = document.createElement('td');
+              let textNode = document.createTextNode(text);
+              cell.appendChild(textNode);
+              row.appendChild(cell);  
+            })
+            table.appendChild(row);
+          })
+
+          myTable.appendChild(table);
+
+
           //update our table content
           //playerStats.innerHTML = stats;
         } catch (error) {
@@ -106,7 +150,4 @@ function playerAdd()
   const stats = [username];
   console.log(username);
 };
-
-
-
 

@@ -26,6 +26,7 @@ const db = getDatabase(app);
 
 const playerRef = ref(db, "players");
 getPlayerData();
+
 function getPlayerData() {
   //const playerRef = ref(db, "players");
   //PlayerRef is declared at the top using a constant
@@ -37,76 +38,78 @@ function getPlayerData() {
           //let's do something about it
           var playerStats = document.getElementById("player-stats");
           let data = [];
+          let activePlayerCount = 0;
           snapshot.forEach((childSnapshot) => {
             //looping through each snapshot
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
             
-            // var table = document.getElementById("myTable");
-            // var row = table.insertRow(0);
-            // var cell1 = row.insertCell(0);
-            // var cell2 = row.insertCell(1);
+            // Creating object for each player, storing username, createdon, lastloggedin, and status
             var playerData = new Object();
             playerData.userNametemp = childSnapshot.child("userName").val() + ": " + childSnapshot.child("email").val();
-            // childSnapshot.emailtemp = childSnapshot.child("email").val();
-            playerData.createdOntemp = childSnapshot.child("createdOn").val();
-            playerData.lastLoggedIntemp = childSnapshot.child("lastLoggedIn").val();
+
+            // Get CreatedOn Timestamp from firebase
+            const createdOntemp = childSnapshot.child("createdOn").val();
+            // Convert Created On Timestmap to readable time
+            var createdOnString = new Date(createdOntemp*1000);
+            // Convert readable time to date (dd MMM yyyy)
+            playerData.createdOn = createdOnString.toDateString();
+            console.log(createdOnString);
+
+            // Get lastLoggedIn Timestamp from firebase
+            const lastLoggedIntemp = childSnapshot.child("lastLoggedIn").val();
+            // Convert lastLoggedIn timestamp to readable time
+            var lastLoggedInString = new Date(lastLoggedIntemp*1000);
+            // Convert Readable time to date (dd MMM yyyy)
+            playerData.lastLoggedIn = lastLoggedInString.toDateString();
             playerData.active = childSnapshot.child("active").val();
+            // Add Disable button here -------------------------------------------------
+            
+            // Add playerData object to data array
             data.push(playerData);
             console.log(childSnapshot);
+
+            // Add number of active players
+            if (playerData.active == true)
+            {
+              activePlayerCount++;
+            }
           
+            // Console log each child element
             console.log("User key: " + childSnapshot.key);
             console.log("Username: " + childSnapshot.child("userName").val());
             console.log("GetPlayerData: childkey " + childSnapshot.key);
             console.log("Email: " + childSnapshot.child("email").val());
             console.log("Created On: " + childSnapshot.child("createdOn").val());
             console.log("Last Logged In: " + childSnapshot.child("lastLoggedIn").val());
-            // document.getElementById("displayName").innerHTML = childSnapshot.child("userName").val();
-            // document.getElementById("displayEmail").innerHTML = childSnapshot.child("email").val();
-            // document.getElementById("displayCreatedOn").innerHTML = childSnapshot.child("createdOn").val();
-            // document.getElementById("displayLoggedIn").innerHTML = childSnapshot.child("lastLoggedIn").val();
-            // document.getElementById("displayStatus").innerHTML = childSnapshot.child("active").val();
-            // if (document.getElementById("displayStatus").innerHTML == "true")
-            // {
-            //   console.log("User is active");
-            //   document.getElementById("displayStatus").innerHTML = "Active";
-            // }
-            // else
-            // {
-            //   console.log("User is inactive");
-            //   document.getElementById("displayStatus").innerHTML = "Offline";
-            // };
-
-            // const playerRow = [document.getElementById("displayName").innerHTML + document.getElementById("displayEmail").innerHTML +
-            // document.getElementById("displayCreatedOn").innerHTML + document.getElementById("displayLoggedIn").innerHTML +
-            // document.getElementById("displayStatus").innerHTML];
-
-            let tableBody = document.querySelector('#tbody');
-
-
-
-            //console.log("Each table row: " + playerRow);
-
-            // document.getElementById("displayRow").innerHTML = playerRow;
-
-            //console.log("Player Stats: " + playerStats)
           });
           console.log(data);
+
+          // Update Active Players Today
+          document.getElementById("active-players-today").innerHTML = activePlayerCount.toString();
           
+          /// Adding a header for player data table
+          // Reference element with table id
           let myTable = document.querySelector('#table');
+          // Create array for table headers
           let headers = ['Player', 'Created On', 'Last Logged In', 'Status'];
 
+          // Create table element
           let table = document.createElement('table');
+          // Create row element
           let headerRow = document.createElement('tr');
 
+          // Create header text for each table header in headers array
           headers.forEach(headerText => {
             let header = document.createElement('th');
             let textNode = document.createTextNode(headerText);
+            // Append header text to header row
             header.appendChild(textNode);
             headerRow.appendChild(header);
           });
 
           table.appendChild(headerRow);
 
+          // Create text for each player data element in data array
           data.forEach(datael => {
             let row = document.createElement('tr');
             Object.values(datael).forEach(text =>{
@@ -120,9 +123,7 @@ function getPlayerData() {
 
           myTable.appendChild(table);
 
-
-          //update our table content
-          //playerStats.innerHTML = stats;
+          // Check for errors
         } catch (error) {
           console.log("Error getPlayerData" + error);
         }

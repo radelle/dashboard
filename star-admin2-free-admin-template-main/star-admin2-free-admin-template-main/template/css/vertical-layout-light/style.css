@@ -10563,6 +10563,7 @@ progress {
 .table-responsive {
   overflow-x: auto;
   overflow-y: scroll;
+  height: 200px;
   -webkit-overflow-scrolling: touch;
 }
 

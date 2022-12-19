@@ -1,7 +1,9 @@
+
 (function($) {
   'use strict';
   $(function() {
     if ($("#performaneLine").length) {
+      
       var graphGradient = document.getElementById("performaneLine").getContext('2d');
       //var graphGradient2 = document.getElementById("performaneLine").getContext('2d');
       var saleGradientBg = graphGradient.createLinearGradient(5, 0, 5, 100);

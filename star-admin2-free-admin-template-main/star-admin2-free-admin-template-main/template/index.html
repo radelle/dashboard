@@ -294,6 +294,9 @@
   </head>
   <body class="sidebar-icon-only sidebar-dark">
     <script src="firebase.js" type="module" defer=""></script>
+    <script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
     <div class="container-scroller">
       <div class="row p-0 m-0 proBanner d-none" id="proBanner">
         <div class="col-md-12 p-0 m-0">
@@ -500,7 +503,7 @@
                                       </div>
                                     </div>
                                     <canvas
-                                      id="performaneLine"
+                                      id="myChart"
                                       style="
                                         display: block;
                                         height: 150px;
@@ -510,6 +513,30 @@
                                       height="187"
                                       class="chartjs-render-monitor"
                                     ></canvas>
+                                    <script>
+                                      var xValues = ["Dec", "Jan", "Feb", "Mar", "Apr", "May"];
+                                      var yValues = [100, 200, 300, 400, 500];
+                                      
+                                      new Chart("myChart", {
+                                        type: "line",
+                                        data: {
+                                          labels: xValues,
+                                          datasets: [{
+                                            fill: false,
+                                            lineTension: 0,
+                                            backgroundColor: "rgba(0,0,255,1.0)",
+                                            borderColor: "rgba(0,0,255,0.1)",
+                                            data: yValues
+                                          }]
+                                        },
+                                        options: {
+                                          legend: {display: false},
+                                          scales: {
+                                            yAxes: [{ticks: {min: 100, max:500}}],
+                                          }
+                                        }
+                                      });
+                                      </script>
                                   </div>
                                 </div>
                               </div>

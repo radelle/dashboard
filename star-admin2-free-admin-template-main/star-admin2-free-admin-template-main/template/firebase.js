@@ -85,7 +85,6 @@ function getPlayerData() {
               activePlayerCount++;
             }
 
-
           
             // Console log each child element
             console.log("User key: " + childSnapshot.key);
@@ -167,4 +166,3 @@ function playerAdd()
   const stats = [username];
   console.log(username);
 };
-

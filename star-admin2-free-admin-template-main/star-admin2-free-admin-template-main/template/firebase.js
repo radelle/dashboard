@@ -93,7 +93,14 @@ function getPlayerData() {
             var lastLoggedInString = new Date(lastLoggedIntemp*1000);
             // Convert Readable time to date (dd MMM yyyy)
             playerData.lastLoggedIn = lastLoggedInString.toDateString();
-            playerData.active = childSnapshot.child("active").val();
+
+            if (childSnapshot.child("active").val() == true)
+            {
+              playerData.active = "Online";
+            }
+            else{
+              playerData.active = "Offline";
+            }
 
             // Add playerData object to data array
             data.push(playerData);
@@ -126,6 +133,7 @@ function getPlayerData() {
             console.log("Email: " + childSnapshot.child("email").val());
             console.log("Created On: " + childSnapshot.child("createdOn").val());
             console.log("Last Logged In: " + childSnapshot.child("lastLoggedIn").val());
+            console.log("Active Status: " + childSnapshot.child("active").val());
           });
           console.log(data);
 

@@ -40,6 +40,8 @@ function getPlayerData() {
           let data = [];
           let activePlayerCount = 0;
           let newPlayerCount = 0;
+          let playerCount = 0;
+
           snapshot.forEach((childSnapshot) => {
             //looping through each snapshot
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
@@ -63,8 +65,7 @@ function getPlayerData() {
             // Convert Readable time to date (dd MMM yyyy)
             playerData.lastLoggedIn = lastLoggedInString.toDateString();
             playerData.active = childSnapshot.child("active").val();
-            // Add Disable button here -------------------------------------------------
-            
+
             // Add playerData object to data array
             data.push(playerData);
             console.log(childSnapshot);
@@ -84,7 +85,10 @@ function getPlayerData() {
             {
               activePlayerCount++;
             }
-
+            if (typeof playerData != "undefined")
+            {
+              playerCount++;
+            }
           
             // Console log each child element
             console.log("User key: " + childSnapshot.key);
@@ -101,6 +105,9 @@ function getPlayerData() {
 
           //Update New Players Today
           document.getElementById("new-players-today").innerHTML = newPlayerCount.toString();
+
+          //Update total players
+          document.getElementById("total-players").innerHTML = playerCount.toString();
           
           /// Adding a header for player data table
           // Reference element with table id
@@ -166,3 +173,4 @@ function playerAdd()
   const stats = [username];
   console.log(username);
 };
+

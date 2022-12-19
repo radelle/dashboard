@@ -24,6 +24,38 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 const db = getDatabase(app);
 
+const playerStatsRef = ref(db, "playerStats");
+getPlayerStatsData();
+
+let playerCount = 0;
+
+function getPlayerStatsData(){
+  get(playerStatsRef)
+    .then((snapshot)=>{
+      if (snapshot.exists()){
+        try{
+          //let data = [];
+            let totalTimeWorked = 0;
+
+            snapshot.forEach((childSnapshot) => {
+            var playerStatsData = new Object();
+            playerStatsData.totalTimeWorked = childSnapshot.child("totalTimeWorked").val();
+            console.log("Total Time Worked: " + childSnapshot.child("totalTimeWorked").val());
+            //console.log("total time worked: " + playerStatsData.totalTimeWorked);
+            var averageTimeWorked = totalTimeWorked / playerCount;
+            console.log("Average Time Worked: " + averageTimeWorked);
+            document.getElementById("average-time-worked").innerHTML = totalTimeWorked.toString();
+          })
+        }
+        catch (error) {
+          console.log("Error getPlayerStatsData" + error);
+        }
+      }
+      else {
+        console.log("No data available");
+      };
+    });
+} 
 const playerRef = ref(db, "players");
 getPlayerData();
 
@@ -35,12 +67,9 @@ function getPlayerData() {
     .then((snapshot) => {//retrieve a snapshot of the data using a callback
       if (snapshot.exists()) {//if the data exist
         try {
-          //let's do something about it
-          var playerStats = document.getElementById("player-stats");
           let data = [];
           let activePlayerCount = 0;
-          let newPlayerCount = 0;
-          let playerCount = 0;
+          let newPlayerCount = 0;  
 
           snapshot.forEach((childSnapshot) => {
             //looping through each snapshot
@@ -167,10 +196,12 @@ function writePlayerData(userId, username, email, createdOn, loggedOn, active){
   });
 };
 
-function playerAdd()
-{
-  childSnapshot.child("userName").val() = username;
-  const stats = [username];
-  console.log(username);
+function writePlayerStatsData(totalTimeWorked){
+  const db = getDatabase
+  set(ref(db, 'playerStats' + userId),{
+    totalTimeWorked: totalTimeWorked
+  });
 };
+
+
 

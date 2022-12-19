@@ -39,6 +39,8 @@ function getPlayerData() {
           var playerStats = document.getElementById("player-stats");
           let data = [];
           let activePlayerCount = 0;
+          let newPlayerCount = 0;
+
           snapshot.forEach((childSnapshot) => {
             //looping through each snapshot
             //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
@@ -68,6 +70,16 @@ function getPlayerData() {
             data.push(playerData);
             console.log(childSnapshot);
 
+            //Get current date in same format as Created On date
+            console.log("Created On Date: " + playerData.createdOn);
+            console.log("Current Date: " + new Date().toDateString());
+
+            //Add number of players today
+            if (playerData.createdOn == new Date().toDateString())
+            {
+              newPlayerCount++;
+            }
+
             // Add number of active players
             if (playerData.active == true)
             {
@@ -83,6 +95,9 @@ function getPlayerData() {
             console.log("Last Logged In: " + childSnapshot.child("lastLoggedIn").val());
           });
           console.log(data);
+
+          //Update New Players Today
+          document.getElementById("new-players-today").innerHTML = newPlayerCount.toString();
 
           // Update Active Players Today
           document.getElementById("active-players-today").innerHTML = activePlayerCount.toString();

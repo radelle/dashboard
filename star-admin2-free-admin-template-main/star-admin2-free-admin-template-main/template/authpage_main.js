@@ -14,19 +14,25 @@ import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword, s
  const app = initializeApp(firebaseConfig);
  const auth = getAuth(app);
 
-
+//Listen for login button
   document.getElementById("login-btn").addEventListener('click', function(){
+    //Get login email value
    const loginEmail= document.getElementById("login-email").value;
+   //Get login password value
    const loginPassword =document.getElementById("login-password").value;
 
+   //signs in user
    signInWithEmailAndPassword(auth, loginEmail, loginPassword)
   .then((userCredential) => {
     const user = userCredential.user;
+    //prints if login is successful
     document.getElementById("result-box").style.display="inline";
      document.getElementById("b-container").style.display="none";
      document.getElementById("result").innerHTML="Welcome Back<br>"+loginEmail+" was Login Successfully";
   })
+  //if user sign in is is not successful
   .catch((error) => {
+    //print error message
     const errorCode = error.code;
     const errorMessage = error.message;
     document.getElementById("result-box").style.display="inline";
@@ -36,19 +42,23 @@ import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword, s
   });
 });
 
-
+  //listens for register button 
   document.getElementById("register-btn").addEventListener('click', function(){
-
+  // gets register email value
    const registerEmail= document.getElementById("register-email").value;
+   //gets register password value
    const registerPassword =document.getElementById("register-password").value;
 
+   //Creates a user in firebase auth
    createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
   .then((userCredential) => {
     const user = userCredential.user;
+    //prints if user registers successfully
     document.getElementById("result-box").style.display="inline";
      document.getElementById("a-container").style.display="none";
      document.getElementById("result").innerHTML="Welcome <br>"+registerEmail+" was Registered Successfully";
   }).catch((error) => {
+    //prints if registration is not successful
     const errorCode = error.code;
     const errorMessage = error.message;
     document.getElementById("result-box").style.display="inline";
@@ -57,14 +67,3 @@ import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword, s
 
   });
 });
-
-
-/* document.getElementById("log-out-btn").addEventListener('click', function(){
-  signOut(auth).then(() => {
-     document.getElementById("result-box").style.display="none";
-       document.getElementById("login-div").style.display="inline";
-  }).catch((error) => {
-     document.getElementById("result").innerHTML="Sorry ! <br>"+errorMessage;
-  });
-
-}); */

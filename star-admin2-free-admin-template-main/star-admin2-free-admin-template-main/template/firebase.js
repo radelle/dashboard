@@ -1,13 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 import {
   ref, child, get, getDatabase, set
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyD04Qf12qgRAf7Joburgt5v4UJwEitY0fk",
   authDomain: "its-worth-a-shot.firebaseapp.com",
@@ -29,25 +26,29 @@ getPlayerStatsData();
 
 let playerCount = 0;
 
+//get player stats
 function getPlayerStatsData(){
   get(playerStatsRef)
-    .then((snapshot)=>{
-      if (snapshot.exists()){
+    .then((snapshot)=>{//retrieve a snapshot of the data using a callback
+      if (snapshot.exists()){//if the data exist
         try{
-          //let data = [];
-            let totalTimeWorked = 0;
+        //to get the average time worked by the player
 
+            //get the total time worked from playerstats
+            let totalTimeWorked = 0;
             snapshot.forEach((childSnapshot) => {
             var playerStatsData = new Object();
             playerStatsData.totalTimeWorked = childSnapshot.child("totalTimeWorked").val();
             console.log("Total Time Worked: " + childSnapshot.child("totalTimeWorked").val());
-            //console.log("total time worked: " + playerStatsData.totalTimeWorked);
+
+            //calculate average time worked from total time worked data
             var averageTimeWorked = totalTimeWorked / playerCount;
             console.log("Average Time Worked: " + averageTimeWorked);
             document.getElementById("average-time-worked").innerHTML = totalTimeWorked.toString();
           })
         }
         catch (error) {
+          //print out error in console if getting player stats data is unsuccessful
           console.log("Error getPlayerStatsData" + error);
         }
       }
@@ -60,20 +61,21 @@ const playerRef = ref(db, "players");
 getPlayerData();
 
 function getPlayerData() {
-  //const playerRef = ref(db, "players");
   //PlayerRef is declared at the top using a constant
-  //get(child(db,`players/`))
   get(playerRef)
     .then((snapshot) => {//retrieve a snapshot of the data using a callback
       if (snapshot.exists()) {//if the data exist
         try {
+        //to get total number of players today
+        //to get number of active players today
+        //to get number of new players today
+        //to get print out data in table: username, email, created on, last logged in, active status
           let data = [];
           let activePlayerCount = 0;
           let newPlayerCount = 0;  
 
           snapshot.forEach((childSnapshot) => {
             //looping through each snapshot
-            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
             
             // Creating object for each player, storing username, createdon, lastloggedin, and status
             var playerData = new Object();
@@ -94,6 +96,7 @@ function getPlayerData() {
             // Convert Readable time to date (dd MMM yyyy)
             playerData.lastLoggedIn = lastLoggedInString.toDateString();
 
+            //converting active bool status (true/false) to online or offline
             if (childSnapshot.child("active").val() == true)
             {
               playerData.active = "Online";
@@ -121,6 +124,7 @@ function getPlayerData() {
             {
               activePlayerCount++;
             }
+            //add total number of players
             if (typeof playerData != "undefined")
             {
               playerCount++;
@@ -193,6 +197,7 @@ function getPlayerData() {
     });
 };//end getPlayerData
 
+//write player data
 function writePlayerData(userId, username, email, createdOn, loggedOn, active){
   const db = getDatabase
   set(ref(db, 'players' + userId), {
@@ -204,6 +209,7 @@ function writePlayerData(userId, username, email, createdOn, loggedOn, active){
   });
 };
 
+//write player stats data
 function writePlayerStatsData(totalTimeWorked){
   const db = getDatabase
   set(ref(db, 'playerStats' + userId),{

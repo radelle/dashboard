@@ -16,6 +16,7 @@ let getButtons = (e) => e.preventDefault()
 
 let changeForm = (e) => {
 
+    //switching from sign in to register
     switchCtn.classList.add("is-gx");
     setTimeout(function(){
         switchCtn.classList.remove("is-gx");
@@ -32,6 +33,7 @@ let changeForm = (e) => {
     bContainer.classList.toggle("is-z200");
 }
 
+//listen for button to change form
 let mainF = (e) => {
     for (var i = 0; i < allButtons.length; i++)
         allButtons[i].addEventListener("click", getButtons );
